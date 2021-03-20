@@ -1,5 +1,7 @@
 package com.sxueck.netcat;
 
+import com.sxueck.linktext.Link;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -7,9 +9,11 @@ import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+@SuppressWarnings("InfiniteLoopStatement")
 public class Sockets {
 
     private int PORT;
+    private final Link linkedContent = new Link();
 
     public void SetPort(int port) {
         this.PORT = port;
@@ -36,10 +40,14 @@ public class Sockets {
             if (line.equalsIgnoreCase("QUIT")) {
                 break;
             } else if (line.equalsIgnoreCase("PRINT")) {
-                os.println(line);
+                String[] Cons = linkedContent.PrintContent(10);
+                for (String con : Cons) {
+                    if (con != null) {
+                        os.println(con);
+                    }
+                }
             } else {
-                System.out.println(line);
-                os.println("successfully submitted");
+                linkedContent.PushContent(line);
                 os.flush();
             }
         }
